@@ -188,6 +188,7 @@ class unordered_map {
         iterator where = end(bucket);
         while (where != begin(bucket)) {
             if ((--where)->first == val.first) {
+                hash_list_.erase(node);
                 return pair<iterator, bool>(where, false);
             }
         }
