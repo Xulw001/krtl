@@ -85,6 +85,8 @@ class unordered_map {
         init(kMinBuckets);
     }
 
+    size_type bucket_count() const { return buckets_; }
+
    private:
     template <typename Iterator>
     Iterator find(const K& key) {
@@ -199,18 +201,22 @@ class unordered_map {
         }
 
         insert_bucket(node, where, bucket);
-
-        if (load_factor()) {
-            init(buckets_ * 2);
-            reinsert();
-        }
-
+        desired_grow_bucket_count();
         return pair<iterator, bool>(node, true);
     }
 
-    size_type bucket_count() { return buckets_; }
+    void desired_grow_bucket_count() {
+        if (max_bucket_size_ * bucket_count() < hash_list_.size()) {
+            size_t buckets = bucket_count();
+            if (buckets < 512)
+                buckets *= 8;  // multiply by 8
+            else if (buckets < SIZE_MAX / 2)
+                buckets *= 2;  // multiply safely by 2
 
-    bool load_factor() { return hash_list_.size() * 4 > 3 * buckets_; }
+            init(buckets);
+            reinsert();
+        }
+    }
 
    private:
     static constexpr size_type kMinBuckets = 8;  // must be a positive power of 2
@@ -219,6 +225,8 @@ class unordered_map {
     my_vector hash_table_;
     size_type mask_;
     size_type buckets_;
+
+    size_type max_bucket_size_ = 1;
 };
 
 }  // namespace rtl
