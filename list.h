@@ -25,7 +25,7 @@ struct __list_val : public ListEntry {
 template <class T, class Ref, class Ptr>
 struct __list_iterator {
    public:
-    typedef __list_val<T>* pointer;
+    using pointer = rtl::conditional_t<rtl::is_const_v<rtl::remove_reference_t<Ref>>, const __list_val<T>*, __list_val<T>*>;
 
     __list_iterator() = default;
     __list_iterator(pointer ptr) : ptr_(ptr) { ; }
