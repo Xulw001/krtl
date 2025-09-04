@@ -2,6 +2,7 @@
 #ifndef _LIST_H
 #define _LIST_H
 
+#include "common.h"
 #include "memory.h"
 #include "struct.h"
 
@@ -107,11 +108,11 @@ class list {
         }
     }
 
-    [[nodiscard]] bool empty() const {
+    _NODISCARD bool empty() const {
         return size() == 0;
     }
 
-    [[nodiscard]] size_type size() const {
+    _NODISCARD size_type size() const {
         return size_;
     }
 

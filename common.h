@@ -1,6 +1,12 @@
 #ifndef _COMMON_H
 #define _COMMON_H
 
+#if __cplusplus >= 201703L
+#define _NODISCARD [[nodiscard]]
+#else
+#define _NODISCARD
+#endif
+
 //////////////////////////////////////////////////////////////////////////
 //
 // namespace rtl (adapted from MSVC C++17)

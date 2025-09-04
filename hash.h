@@ -51,7 +51,7 @@ constexpr size_t _FNV_offset_basis = 0x811c9dc5u;
 constexpr size_t _FNV_prime = 0x01000193u;
 #endif  // ^^^ !defined(_WIN64) ^^^
 
-[[nodiscard]] inline size_t _Fnv1a_append_bytes(size_t _Val, const unsigned char* const _First,
+_NODISCARD inline size_t _Fnv1a_append_bytes(size_t _Val, const unsigned char* const _First,
                                                 const size_t _Count) noexcept {  // accumulate range [_First, _First + _Count) into partial FNV-1a hash _Val
     for (size_t _Idx = 0; _Idx < _Count; ++_Idx) {
         _Val ^= static_cast<size_t>(_First[_Idx]);
@@ -62,13 +62,13 @@ constexpr size_t _FNV_prime = 0x01000193u;
 }
 
 template <class _Kty>
-[[nodiscard]] size_t _Fnv1a_append_value(
+_NODISCARD size_t _Fnv1a_append_value(
     const size_t _Val, const _Kty& _Keyval) noexcept {  // accumulate _Keyval into partial FNV-1a hash _Val
     return _Fnv1a_append_bytes(_Val, &reinterpret_cast<const unsigned char&>(_Keyval), sizeof(_Kty));
 }
 
 template <class _Kty>
-[[nodiscard]] size_t _Hash_representation(const _Kty& _Keyval) noexcept {  // bitwise hashes the representation of a key
+_NODISCARD size_t _Hash_representation(const _Kty& _Keyval) noexcept {  // bitwise hashes the representation of a key
     return _Fnv1a_append_value(_FNV_offset_basis, _Keyval);
 }
 
@@ -84,7 +84,7 @@ struct _Conditionally_enabled_hash {
     typedef _Kty argument_type;
     typedef size_t result_type;
 
-    [[nodiscard]] size_t operator()(const _Kty& _Keyval) const {
+    _NODISCARD size_t operator()(const _Kty& _Keyval) const {
         return (hash<_Kty>::_Do_hash(_Keyval));
     }
 };

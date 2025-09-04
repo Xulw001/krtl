@@ -36,7 +36,7 @@ class vector {
         }
     }
 
-    [[nodiscard]] bool empty() const {
+    _NODISCARD bool empty() const {
         return size() == 0;
     }
 
@@ -48,27 +48,27 @@ class vector {
         return start_[pos];
     }
 
-    [[nodiscard]] iterator begin() {
+    _NODISCARD iterator begin() {
         return start_;
     }
 
-    [[nodiscard]] iterator end() {
+    _NODISCARD iterator end() {
         return end_;
     }
 
-    [[nodiscard]] const_iterator begin() const {
+    _NODISCARD const_iterator begin() const {
         return start_;
     }
 
-    [[nodiscard]] const_iterator end() const {
+    _NODISCARD const_iterator end() const {
         return end_;
     }
 
-    [[nodiscard]] size_t size() const {
+    _NODISCARD size_t size() const {
         return end_ - start_;
     }
 
-    [[nodiscard]] size_t capacity() const {
+    _NODISCARD size_t capacity() const {
         return last_ - start_;
     }
 
