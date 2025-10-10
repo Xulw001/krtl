@@ -189,6 +189,41 @@ struct remove_reference<_Ty&&> {
 template <class _Ty>
 using remove_reference_t = typename remove_reference<_Ty>::type;
 
+//////////////////////////////////////////////////////////////////////////
+//
+// is_const
+//
+template <class>
+constexpr bool is_const_v = false;  // determine whether type argument is const qualified
+
+template <class _Ty>
+constexpr bool is_const_v<const _Ty> = true;
+
+template <class _Ty>
+struct is_const : bool_constant<is_const_v<_Ty>> {};
+
+//////////////////////////////////////////////////////////////////////////
+//
+// is_pointer
+//
+template <class>
+constexpr bool is_pointer_v = false;  // determine whether _Ty is a pointer
+
+template <class _Ty>
+constexpr bool is_pointer_v<_Ty*> = true;
+
+template <class _Ty>
+constexpr bool is_pointer_v<_Ty* const> = true;
+
+template <class _Ty>
+constexpr bool is_pointer_v<_Ty* volatile> = true;
+
+template <class _Ty>
+constexpr bool is_pointer_v<_Ty* const volatile> = true;
+
+template <class _Ty>
+struct is_pointer : bool_constant<is_pointer_v<_Ty>> {};
+
 }  // namespace rtl
 
 #endif
