@@ -34,12 +34,13 @@ template <typename K, typename V, typename Hasher = hash<K>, typename Alloc = al
 class unordered_map {
    private:
     using my_list = typename list<pair<K, V>, Alloc>;
-    using iterator = typename my_list::iterator;
-    using const_iterator = typename my_list::const_iterator;
-    using my_vector = typename vector<iterator, allocator<iterator, pool_tag<Alloc>::value>>;
+    using my_iterator = typename my_list::iterator;
+    using my_vector = typename vector<my_iterator, allocator<my_iterator, pool_tag<Alloc>::value>>;
     using hasher = typename Hasher;
 
    public:
+    using iterator = typename my_iterator;
+    using const_iterator = typename my_list::const_iterator;
     using value_type = typename my_list::value_type;
     using size_type = typename my_list::size_type;
 
