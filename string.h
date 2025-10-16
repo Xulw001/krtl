@@ -18,6 +18,9 @@ class basic_string {
     using iterator = pointer;
     using const_iterator = const_pointer;
 
+    template <typename T, class OtherAlloc>
+    friend class basic_string;
+
     basic_string() : size_(0), capacity_(kLocalSize - 1) { ; }
 
     basic_string(const_pointer ptr) : basic_string(ptr, length(ptr)) { ; }
@@ -63,7 +66,8 @@ class basic_string {
         return data()[pos];
     }
 
-    bool operator==(const basic_string& str) const {
+    template <class OtherAlloc = allocator<T, Tag>>
+    bool operator==(const basic_string<T, OtherAlloc>& str) const {
         if (str.size_ != size_ || capacity_ != str.capacity_) {
             return false;
         }
@@ -71,7 +75,8 @@ class basic_string {
         return memcmp(data(), str.data(), size_ * sizeof(T)) == 0;
     }
 
-    bool operator!=(const basic_string& str) const {
+    template <class OtherAlloc = allocator<T, Tag>>
+    bool operator!=(const basic_string<T, OtherAlloc>& str) const {
         return !(*this == str);
     }
 
@@ -99,7 +104,8 @@ class basic_string {
         size_ = 0;
     }
 
-    void swap(basic_string& right) {
+    template <class OtherAlloc = allocator<T, Tag>>
+    void swap(basic_string<T, OtherAlloc>& right) {
         size_t size = 0;
         size_t capacity = 0;
         T local[kLocalSize] = {0};
