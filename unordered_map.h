@@ -35,7 +35,7 @@ class unordered_map {
    private:
     using my_list = typename list<pair<K, V>, Alloc>;
     using my_iterator = typename my_list::iterator;
-    using my_vector = typename vector<my_iterator, allocator<my_iterator, pool_tag<Alloc>::value>>;
+    using my_vector = typename vector<my_iterator, typename Alloc::template rebind<my_iterator>::other>;
     using hasher = typename Hasher;
 
    public:
