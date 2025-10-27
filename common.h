@@ -224,6 +224,16 @@ constexpr bool is_pointer_v<_Ty* const volatile> = true;
 template <class _Ty>
 struct is_pointer : bool_constant<is_pointer_v<_Ty>> {};
 
+//////////////////////////////////////////////////////////////////////////
+//
+// move
+//
+template <class _Ty>
+inline _NODISCARD constexpr remove_reference_t<_Ty>&& move(_Ty&& _Arg) noexcept {
+    // forward _Arg as movable
+    return (static_cast<remove_reference_t<_Ty>&&>(_Arg));
+}
+
 }  // namespace rtl
 
 #endif
