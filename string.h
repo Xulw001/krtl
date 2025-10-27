@@ -123,7 +123,7 @@ class basic_string {
     }
 
     void upper() {
-        for (auto i = 0; i < size_; i++) {
+        for (unsigned i = 0; i < size_; i++) {
             pointer p = data();
             if (p[i] >= T('a') && p[i] <= T('z')) {
                 p[i] = p[i] - T('a') + T('A');
