@@ -48,7 +48,9 @@ class basic_string {
     }
 
     basic_string(basic_string&& other) {
-        swap(other);
+        if (this != &other) {
+            swap(other);
+        }
     }
 
     template <class OtherAlloc = allocator<T, Tag>>
@@ -65,7 +67,9 @@ class basic_string {
     }
 
     basic_string& operator=(basic_string&& other) {
-        swap(other);
+        if (this != &other) {
+            swap(other);
+        }
         return *this;
     }
 
@@ -126,6 +130,7 @@ class basic_string {
 
     template <class OtherAlloc = allocator<T, Tag>>
     void swap(basic_string<T, OtherAlloc>& right) {
+        if ((uintptr_t)this == (uintptr_t)&right) return;
         size_t size = 0;
         size_t capacity = 0;
         T local[kLocalSize] = {0};
