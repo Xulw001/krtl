@@ -47,6 +47,10 @@ class basic_string {
         swap(tmp);
     }
 
+    basic_string(basic_string&& other) {
+        swap(other);
+    }
+
     template <class OtherAlloc = allocator<T, Tag>>
     basic_string& operator=(const basic_string<T, OtherAlloc>& other) {
         basic_string tmp(other.data(), other.size());
@@ -57,6 +61,11 @@ class basic_string {
     basic_string& operator=(const basic_string& other) {
         basic_string tmp(other.data(), other.size());
         swap(tmp);
+        return *this;
+    }
+
+    basic_string& operator=(basic_string&& other) {
+        swap(other);
         return *this;
     }
 
