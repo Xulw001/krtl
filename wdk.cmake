@@ -50,7 +50,7 @@ set(WDK_COMPILE_FLAGS
     "/GS" # 启用安全检查
     "/D WINNT=1")
 
-set(WDK_LIB "${WDK_LIB_ROOT}/km/${ARCH}")
+set(WDK_LIB_DIR "${WDK_LIB_ROOT}/km/${ARCH}")
 set(WDK_LINK_FLAGS
     "/MANIFEST:NO"
     "/Driver" 
@@ -118,7 +118,7 @@ function(wdk_add_library _target)
 endfunction(wdk_add_library)
 
 function(wdk_add_driver _target)
-    cmake_parse_arguments(WDK "" "WINVER;NTDDI_VERSION;SIGN_STORE;SIGN_NAME" "" ${ARGN})
+    cmake_parse_arguments(WDK "" "WINVER;NTDDI_VERSION;SIGN_STORE;SIGN_NAME" "LIBS" ${ARGN})
     add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
     set_target_properties(${_target} PROPERTIES SUFFIX ".sys")
 
@@ -129,12 +129,18 @@ function(wdk_add_driver _target)
         target_compile_definitions(${_target} PRIVATE -DNTDDI_VERSION=${WDK_NTDDI_VERSION})
     endif()
 
-    target_link_libraries(${_target} PRIVATE
-        ${WDK_LIB}/BufferOverflowFastFailK.lib
-        ${WDK_LIB}/ntoskrnl.lib
-        ${WDK_LIB}/hal.lib
-        ${WDK_LIB}/wmilib.lib
-    )
+    set(DEFAULT_LIBS "BufferOverflowFastFailK" "ntoskrnl" "hal" "wmilib")
+
+    foreach(WDK_LIB ${WDK_LIBS})
+        if(WDK_LIB IN_LIST DEFAULT_LIBS)
+            continue()
+        endif()
+        target_link_libraries(${_target} PRIVATE ${WDK_LIB_DIR}/${WDK_LIB}.lib)
+    endforeach()
+
+    foreach(WDK_LIB ${DEFAULT_LIBS})
+        target_link_libraries(${_target} PRIVATE ${WDK_LIB_DIR}/${WDK_LIB}.lib)
+    endforeach()
 
     target_link_options(${_target} PRIVATE ${WDK_LINK_FLAGS} PRIVATE "/MERGE:_TEXT=.text\;_PAGE=PAGE")
 
