@@ -73,6 +73,10 @@ else()
     list(APPEND WDK_LINK_FLAGS "/ENTRY:GsDriverEntry@8")
 endif()
 
+if(CMAKE_CONFIGURATION_TYPES)
+    list(APPEND WDK_COMPILE_FLAGS $<$<CONFIG:Debug>:/D DBG=1>)
+endif()
+
 macro(move_variable src dst)
     set(var "${${dst}}")
     set(${dst} "${${src}}")
