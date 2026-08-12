@@ -92,7 +92,7 @@ class basic_string {
 
     template <class OtherAlloc = allocator<T, Tag>>
     bool operator==(const basic_string<T, OtherAlloc>& str) const {
-        if (str.size_ != size_ || capacity_ != str.capacity_) {
+        if (str.size_ != size_) {
             return false;
         }
 
