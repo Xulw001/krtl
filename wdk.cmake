@@ -133,7 +133,12 @@ function(wdk_add_driver _target)
         target_compile_definitions(${_target} PRIVATE -DNTDDI_VERSION=${WDK_NTDDI_VERSION})
     endif()
 
-    set(DEFAULT_LIBS "BufferOverflowFastFailK" "ntoskrnl" "hal" "wmilib")
+    set(DEFAULT_LIBS  "ntoskrnl" "hal" "wmilib")
+    if(WDK_WINVER LESS "0x0602") # If WINVER < 0x0602 (Windows 7 or lower)
+        list(APPEND DEFAULT_LIBS "BufferOverflowK")
+    else() # Windows 8 and above
+        list(APPEND DEFAULT_LIBS "BufferOverflowFastFailK")
+    endif()
 
     foreach(WDK_LIB ${WDK_LIBS})
         if(WDK_LIB IN_LIST DEFAULT_LIBS)
